@@ -1,0 +1,63 @@
+#!/usr/bin/env zsh
+#
+# Defines some useful aliases, post-zshrc.
+#
+# Editor:
+#   Jeffrey Serio <hyperreal64@gmail.com>
+#
+
+# Use batman as man-page program if exists
+if [ "$(command -v batman)" ]; then
+    alias man="batman"
+fi
+
+# Networking
+alias myip="curl ipinfo.io"
+alias netCons="lsof -i"
+alias tulp="ss -tulp"
+alias openPorts="sudo lsof -i | grep LISTEN"
+alias pong="ping -c 3 www.google.com"
+
+# File management
+alias grep="grep --color"
+alias sgrep="grep -R -n -H -C 5 --exclude-dir={.git} "
+alias t="tail -f"
+alias -g C="| wc -l"
+alias -g H="| head"
+alias -g F="| fzf"
+alias -g T="| tail"
+alias -g G="| grep"
+alias -g L="| less"
+alias -g M="| most"
+alias -g LL="2>&1 | less"
+alias -g CA="2>&1 | cat -A"
+alias -g NE="2> /dev/null"
+alias -g NUL="> /dev/null 2>&1"
+alias rm="rm -i"
+alias cp="cp -i"
+alias mv="mv -i"
+alias lslog="ls /var/log/"
+if [ $(command -v lsd) ]; then
+    alias ls="lsd"
+fi
+alias la="ls -a"
+alias ll="ls -l"
+alias lal="ls -al"
+alias -g CC="| xsel -ib"
+
+# System/Power management
+alias reboot="sudo systemctl reboot"
+alias shut="sudo systemctl poweroff"
+
+# rpm-ostree aliases
+alias rost="sudo rpm-ostree"
+alias rostatus="sudo rpm-ostree status"
+alias rostroll="sudo rpm-ostree rollback"
+alias rostclean="sudo rpm-ostree cleanup"
+alias rostrefresh="sudo rpm-ostree refresh-md"
+alias rostkargs="sudo rpm-ostree kargs"
+alias rostrebase="sudo rpm-ostree rebase"
+alias rostup="sudo rpm-ostree upgrade"
+alias rostin="sudo rpm-ostree install"
+alias rostrm="sudo rpm-ostree uninstall"
+

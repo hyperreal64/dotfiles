@@ -1,0 +1,140 @@
+#!/usr/bin/env zsh
+#
+# Defines some useful functions, post-zshrc
+#
+# Editor:
+#   Jeffrey Serio <hyperreal64@gmail.com>
+#
+
+# Show shell files
+zalias() { bat "${HOME}/.zsh/zaliases"; }
+zenv() { bat "${HOME}/.zshenv"; }
+zfuncs() { bat "${HOME}/.zsh/zfunctions"; }
+
+# Do an ls after cd
+cd() { builtin cd "$@" && ls; }
+
+# Start dropbear in toolbox at specified port
+dropthebear() {
+  sudo dropbear -w -B -p :"$1" -E
+}
+
+# Ensure goto register and unregister are synced 
+# with dotfiles
+goto_reg() {
+  goto -r "$1" "$2" && \
+    cp -f "${HOME}/.config/goto" "${DOTFILES}/config/.config/goto"
+}
+
+goto_unreg() {
+  goto -u "$1" && \
+    cp -f "${HOME}/.config/goto" "${DOTFILES}/config/.config/goto"
+}
+
+# Create a new directory and enter it
+mkd() { mkdir -p "$@" && cd "$_"; }
+
+# Refresh shell env
+restart() { exec $SHELL $SHELL_ARGS "$@"; }
+rsrc() { cd && clear && restart; }
+
+# pids
+pids() { pgrep -a "$@"; }
+
+# Create a toolbox container with name=$1
+tbcr() { toolbox create -c "$1"; }
+
+# Remove a toolbox container if exists
+tbrm() {
+    if podman container exists "$1"; then
+        podman container stop "$1"
+        toolbox rm "$1" && echo "Successfully removed $1"
+    else
+        echo "Toolbox $1 does not exist"
+    fi
+}
+
+# List toolbox containers
+tbls() { toolbox list; }
+
+# Enter a toolbox container with name=$1
+tben() { toolbox enter "$1"; }
+
+# Run command in toolbox container
+# name=$1, command=$@
+tbrun() { toolbox run -c "$1" "$@"; }
+
+# Run a command in the default toolbox container
+tbdrun() { toolbox run -c default "$@"; }
+
+# Restic backup dotfiles
+dots_backup() {
+  restic \
+    -r rest:http://<rest-server-ip>:8000/dotfiles \
+    backup "${HOME}/dotfiles" \
+    --files-from ~/onedrive/dotfiles-backup.txt \
+    --password-file "${HOME}/.restic-pw";
+}
+
+# Restic restore dotfiles - requires snapshot ID arg
+dots_restore() {
+  restic \
+    -r rest:http://<rest-server-ip>:8000/dotfiles \
+    restore "$1" \ 
+    --target / \
+    --password-file "${HOME}/.restic-pw";
+}
+
+# Restic list dotfiles snapshots
+dots_snaps() {
+  restic \
+    -r rest:http://<rest-server-ip>:8000/dotfiles \
+    snapshots \
+    --password-file "${HOME}/.restic-pw";
+}
+
+# Restic list files in snapshot - requires snapshot ID arg
+dots_ls() {
+  restic \
+    -r rest:http://<rest-server-ip>:8000/dotfiles \
+    ls "$1" \
+    --password-file "${HOME}/.restic-pw";
+}
+
+# Fuzzies for fzf
+fd() {
+  if [ $(command -v fd) ]; then
+    FZF_DEFAULT_COMMAND='fd . -t f' \
+      fzf --bind 'ctrl-d:reload(fd . -t d),ctrl-f:reload($FZF_DEFAULT_COMMAND)' \
+      --height=50% --layout=reverse
+  else
+    FZF_DEFAULT_COMMAND='find . -type f' \
+      fzf --bind 'ctrl-d:reload(find . -type d),ctrl-f:reload($FZF_DEFAULT_COMMAND)' \
+      --height=50% --layout=reverse
+  fi
+}
+
+igr() {
+  declare preview='bat --color=always --style=header,numbers -H {2} {1} | grep -C3 {q}'
+
+  while getopts ':1' x; do
+    case "$x" in
+      l) list_files=1
+        preview='bat --color=always --style=header,numbers {1} | grep -C3 {q}'
+        ;;
+    esac
+  done
+  shift $(( OPTIND - 1 ))
+  unset x OPTARG OPTIND
+ 
+  rg --color=always -n ${list_files:+-l} "$1" 2> /dev/null |
+    fzf -d: \
+    --ansi \
+    --query="$1" \
+    --phony \
+    --bind="change:reload:rg -n ${list_files:+-l} --color=always {q}" \
+    --bind='enter:execute:v {1}' \
+    --preview="[[ -n {1} ]] && $preview"
+}
+
+
