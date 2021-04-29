@@ -9,7 +9,7 @@ adaptations for [WSL](https://github.com/microsoft/WSL). User discretion is
 advised 🧐
 
 I use GNU Stow to symlink these to the home directory. They expect zsh and tmux
-to be installed (layered) on the host ostree and zsh, tmux, and Neovim to be
+to be installed (layered) on the host ostree and zsh and Neovim to be
 installed in toolboxes. [fzf](https://github.com/junegunn/fzf) should also be
 installed to the home directory at `~/.fzf`.
 
