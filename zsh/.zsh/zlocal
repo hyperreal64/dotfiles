@@ -6,53 +6,26 @@
 #   Jeffrey Sero <hyperreal64@gmail.com>
 #
 
+export BAT_THEME="Dracula"
 export RESTIC_PASSWORD_FILE="${HOME}/.restic-pw"
+export YSU_MESSAGE_POSITION="after"
+export YSU_HARDCORE=1
 
 # Load ~/.dir_colors if exists
 [[ -f "${HOME}/.dir_colors" ]] && eval $(dircolors -b "${HOME}/.dir_colors")
 
-# Spaceship prompt
-SPACESHIP_PROMPT_ORDER=(
-    user
-    host
-    dir
-    git
-    exec_time
-    jobs
-    line_sep
-    exit_code
-    char
+# Set path
+typeset -U PATH path
+path=(
+    /usr/local/bin
+    /usr/local/sbin
+    "${HOME}/bin"
+    "${HOME}/.local/bin"
+    "${GOPATH}/bin"
+    "${GOROOT}/bin"
+    "${PIPX_BIN_DIR}"
+    "${path[@]}"
 )
+export PATH
 
-SPACESHIP_RPROMPT_ORDER=(
-    node
-    ruby
-    golang
-    rust
-    docker
-    venv
-    pyenv
-    time
-)
-
-# Prompt config inspired by the 'linuxonly' zsh theme.
-# Uses value of TB_NAME defined in ~/.zshrc if inside
-# toolbox container.
-SPACESHIP_USER_SHOW="always"
-SPACESHIP_USER_SUFFIX="@"
-SPACESHIP_USER_COLOR="#afd7ff"
-SPACESHIP_HOST_SHOW="always"
-SPACESHIP_HOST_COLOR="#5fafff"
-SPACESHIP_HOST_PREFIX=""
-SPACESHIP_HOST_SUFFIX=":$TB_NAME"
-SPACESHIP_DIR_PREFIX=" ➜ "
-SPACESHIP_DIR_TRUNC=0
-SPACESHIP_DIR_COLOR="#87ffd7"
-SPACESHIP_CHAR_SYMBOL=" "
-SPACESHIP_GOLANG_SYMBOL=""
-SPACESHIP_RUST_SYMBOL=""
-SPACESHIP_EXIT_CODE_SHOW="true"
-SPACESHIP_EXIT_CODE_SYMBOL="x "
-SPACESHIP_TIME_SHOW="true"
-SPACESHIP_TIME_PREFIX=""
 

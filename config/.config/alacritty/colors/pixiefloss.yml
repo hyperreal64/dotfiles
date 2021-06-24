@@ -1,0 +1,28 @@
+schemes:
+    pixiefloss: &pixiefloss
+        primary:
+            background: '0x241f33'
+            foreground: '0xd1cae8'
+
+        # Normal colors
+        normal:
+            black:   '0x42395d'
+            red:     '0xff857f'
+            green:   '0x48b685'
+            yellow:  '0xe6c000'
+            blue:    '0xae81ff'
+            magenta: '0xef6155'
+            cyan:    '0x19c7ed'
+            white:   '0xf8f8f2'
+
+        # Bright colors
+        bright:
+            black:   '0x75507b'
+            red:     '0xf1568e'
+            green:   '0x5adba2'
+            yellow:  '0xd5a425'
+            blue:    '0xc5a3ff'
+            magenta: '0xef6155'
+            cyan:    '0x10a1c1'
+            white:   '0xf8f8f0'
+

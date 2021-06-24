@@ -1,68 +1,43 @@
-#!/usr/bin/env zsh
-#
-# Main zshrc
-#
-# Editor:
-#   Jeffrey Serio <hyperreal64@gmail.com>
-#
+source "${HOME}/.zsh/antigen.zsh"
 
-export ZSH=$HOME/.oh-my-zsh
+antigen use oh-my-zsh
 
-plugins=(
-  extract
-  fzf
-  git
-  history-substring-search
-  sudo
-  zsh-autosuggestions
-  zsh-interactive-cd
-  zsh-syntax-highlighting
-)
+antigen bundle git
+antigen bundle extract
+antigen bundle fzf
+antigen bundle sudo
+antigen bundle systemd
+antigen bundle tmux
+antigen bundle "MichaelAquilina/zsh-you-should-use"
+antigen bundle zsh-users/zsh-autosuggestions
+antigen bundle zsh-users/zsh-history-substring-search
+antigen bundle zsh-users/zsh-syntax-highlighting
 
-# Toolbox-specific plugins
-tb_plugins=(
-  dnf
-)
+antigen theme romkatv/powerlevel10k
 
-# Host-specific plugins
-host_plugins=(
-  firewalld
-  systemd
-  tmux
-  tmuxinator
-)
+antigen apply
 
-# If OCI or WSL, set plugins, themes, vars accordingly
-if (( ${+container} )); then
-    plugins+=($tb_plugins)
-    ZSH_THEME="spaceship-prompt/spaceship"
-    TB_NAME=$(source /run/.containerenv && echo $name)
-elif (( ${+WSLENV} )); then
-    plugins+=(dnf tmux ubuntu)
-    ZSH_THEME="spaceship-prompt/spaceship"
-    export PATH="/bin:/sbin:/usr/bin:/usr/sbin"
-else
-    plugins+=($host_plugins)
-    ZSH_THEME="linuxonly2"
-fi
-
-source $ZSH/oh-my-zsh.sh
-
-# Set keybinding for history substring search
+# Set keybinding for zsh-history-substring-search
 bindkey '^[[1;5A' history-substring-search-up
 bindkey '^[[1;5B' history-substring-search-down
 
 # Shell options
 setopt appendhistory
-setopt incappendhistory
-setopt auto_cd
+setopt autocd
+setopt cdablevars
+setopt pushdignoredups
+setopt autolist
+setopt histignorealldups
+setopt histsavenodups
+setopt sharehistory
+setopt longlistjobs
 
-# Load completion for goto
+# Load completion from bash
 autoload bashcompinit
 bashcompinit
 
 # Load goto shell utility
-[[ -f /usr/local/share/goto.sh ]] && source /usr/local/share/goto.sh
+[[ -f "${HOME}/.zsh/goto.sh" ]] && source "${HOME}/.zsh/goto.sh"
 
 # Aliases
 [[ -s "${HOME}/.zsh/zaliases" ]] && source "${HOME}/.zsh/zaliases"
@@ -72,3 +47,6 @@ bashcompinit
 
 # Local stuffs
 [[ -s "${HOME}/.zsh/zlocal" ]] && source "${HOME}/.zsh/zlocal"
+
+# To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
+[[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh

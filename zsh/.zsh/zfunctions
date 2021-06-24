@@ -14,23 +14,6 @@ zfuncs() { bat "${HOME}/.zsh/zfunctions"; }
 # Do an ls after cd
 cd() { builtin cd "$@" && ls; }
 
-# Start dropbear in toolbox at specified port
-dropthebear() {
-  sudo dropbear -w -B -p :"$1" -E
-}
-
-# Ensure goto register and unregister are synced 
-# with dotfiles
-goto_reg() {
-  goto -r "$1" "$2" && \
-    cp -f "${HOME}/.config/goto" "${DOTFILES}/config/.config/goto"
-}
-
-goto_unreg() {
-  goto -u "$1" && \
-    cp -f "${HOME}/.config/goto" "${DOTFILES}/config/.config/goto"
-}
-
 # Create a new directory and enter it
 mkd() { mkdir -p "$@" && cd "$_"; }
 
@@ -40,62 +23,6 @@ rsrc() { cd && clear && restart; }
 
 # pids
 pids() { pgrep -a "$@"; }
-
-# Create a toolbox container with name=$1
-tbcr() { toolbox create -c "$1"; }
-
-# Remove a toolbox container if exists
-tbrm() {
-    if podman container exists "$1"; then
-        podman container stop "$1"
-        toolbox rm "$1" && echo "Successfully removed $1"
-    else
-        echo "Toolbox $1 does not exist"
-    fi
-}
-
-# List toolbox containers
-tbls() { toolbox list; }
-
-# Enter a toolbox container with name=$1
-tben() { toolbox enter "$1"; }
-
-# Run command in toolbox container
-# name=$1, command=$@
-tbrun() { toolbox run -c "$1" "$@"; }
-
-# Run a command in the default toolbox container
-tbdrun() { toolbox run -c default "$@"; }
-
-# Restic backup dotfiles
-dots_backup() {
-  restic \
-    -r rest:http://<rest-server-ip>:8000/dotfiles \
-    backup \
-    --files-from ~/onedrive/dotfiles-backup.txt;
-}
-
-# Restic restore dotfiles - requires snapshot ID arg
-dots_restore() {
-  restic \
-    -r rest:http://<rest-server-ip>:8000/dotfiles \
-    restore "$1" \ 
-    --target / ;
-}
-
-# Restic list dotfiles snapshots
-dots_snaps() {
-  restic \
-    -r rest:http://<rest-server-ip>:8000/dotfiles \
-    snapshots;
-}
-
-# Restic list files in snapshot - requires snapshot ID arg
-dots_ls() {
-  restic \
-    -r rest:http://<rest-server-ip>:8000/dotfiles \
-    ls "$1" ;
-}
 
 # Fuzzies for fzf
 fd() {

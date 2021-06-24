@@ -11,20 +11,6 @@ if [[ "$SHLVL" -eq 1 && ! -o LOGIN && -s "${ZDOTDIR:-$HOME}/.zprofile" ]]; then
     source "${ZDOTDIR:-$HOME}/.zprofile"
 fi
 
-# Set path
-typeset -U PATH path
-path=(
-    /usr/local/bin
-    /usr/local/sbin
-    "${HOME}/bin"
-    "${HOME}/.local/bin"
-    "${GOPATH}/bin"
-    "${GOROOT}/bin"
-    "${PIPX_BIN_DIR}"
-    "${path[@]}"
-)
-export PATH
-
 export PAGER="less -X"
 export EDITOR="nvim"
 export HISTSIZE=5000
@@ -41,3 +27,4 @@ export DOTFILES="${HOME}/dotfiles"
 export FZF_BASE="${HOME}/.fzf"
 export FZF_COMPLETION_TRIGGER="~~"
 
+if [ -e /home/jas/.nix-profile/etc/profile.d/nix.sh ]; then . /home/jas/.nix-profile/etc/profile.d/nix.sh; fi # added by Nix installer
