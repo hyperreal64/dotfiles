@@ -77,16 +77,33 @@ end
 
 setup_servers()
 
+-- Bash LSP
+require'lspconfig'.bashls.setup{}
+
+-- Docker LSP
+require'lspconfig'.dockerls.setup{}
+
+-- JSON LSP
+require'lspconfig'.jsonls.setup{}
+
+-- Python LSP (Pyright)
+require'lspconfig'.pyright.setup{
+    cmd = { "/home/jas/.nix-profile/bin/pyright-langserver" }
+}
+
 -- Rnix LSP
 require'lspconfig'.rnix.setup{
   cmd = { "/home/jas/.nix-profile/bin/rnix-lsp" }
 }
 
+-- YAML LSP
+require'lspconfig'.yamlls.setup{}
+
 -- Automatically reload after `:LspInstall <server>` so we don't have to restart neovim
-require "lspinstall".post_install_hook = function()
-    setup_servers() -- reload installed servers
-    vim.cmd("bufdo e") -- this triggers the FileType autocmd that starts the server
-end
+-- require "lspinstall".post_install_hook = function()
+--     setup_servers() -- reload installed servers
+--     vim.cmd("bufdo e") -- this triggers the FileType autocmd that starts the server
+-- end
 
 -- replace the default lsp diagnostic letters with prettier symbols
 vim.fn.sign_define("LspDiagnosticsSignError", {text = "", numhl = "LspDiagnosticsDefaultError"})
