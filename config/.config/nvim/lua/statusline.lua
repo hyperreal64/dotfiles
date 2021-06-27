@@ -4,11 +4,11 @@ local condition = require("galaxyline.condition")
 
 gl.short_line_list = {" "}
 
-local colors = require "themes/onedark"
+local colors = require "themes/embark"
 
 gls.left[1] = {
   FirstElement = {
-    provider = function() return '▋' end,
+    provider = function() return '' end,
     highlight = { colors.nord_blue, colors.nord_blue }
   },
 }

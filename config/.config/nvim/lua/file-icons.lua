@@ -1,4 +1,4 @@
-local colors = require "themes/onedark"
+local colors = require "themes/embark"
 
 require "nvim-web-devicons".setup {
     override = {

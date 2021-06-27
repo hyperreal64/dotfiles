@@ -18,8 +18,7 @@ return packer.startup(
         use "onsails/lspkind-nvim"
         use "sbdchd/neoformat"
         use "nvim-lua/plenary.nvim"
-        use "kabouzeid/nvim-lspinstall"
-
+        use {"plasticboy/vim-markdown", requires = "godlygeek/tabular"} 
         use "editorconfig/editorconfig-vim"
         use "LnL7/vim-nix"
         use "lewis6991/gitsigns.nvim"
@@ -49,7 +48,6 @@ return packer.startup(
         use "tweekmonster/startuptime.vim"
         use "907th/vim-auto-save"
         use "karb94/neoscroll.nvim"
-        use "kdav5758/TrueZen.nvim"
         use "folke/which-key.nvim"
         use {"lukas-reineke/indent-blankline.nvim", branch = "lua"}
     end,

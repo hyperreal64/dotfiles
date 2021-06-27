@@ -52,7 +52,6 @@ vim.api.nvim_exec([[
    au BufEnter term://* setlocal nonumber
 ]], false)
 
-require "zenmode"
 require "whichkey"
 require "dashboard"
 require('nvim_comment').setup()
